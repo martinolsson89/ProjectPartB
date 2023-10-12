@@ -12,31 +12,46 @@ namespace ProjectPartB_B1
             //Makes symbols show on console.
             Console.OutputEncoding = Encoding.Unicode;
 
-            int NrOfCards;
-            int NrOfRounds;
-            bool _continue = true;
+            // Variables
+            int NrOfCards; //Number of cars to deal.
+            int NrOfRounds; //Number of rounds to play.
+            bool _continue = true; //If game should continue or quit. 
+
             do
             {
+                Console.Clear();
+
+                // Create a new instance of the of cards.
+
                 DeckOfCards myDeck = new DeckOfCards();
+
+                // Displaying a new deck of 52 cards.
+
                 myDeck.CreateFreshDeck();
                 Console.WriteLine($"\nA freshly created deck with {myDeck.Count} cards:");
                 Console.WriteLine(myDeck);
+
+                // Sorting the deck.
 
                 Console.WriteLine($"\nA sorted deck with {myDeck.Count} cards:");
                 myDeck.Sort();
                 Console.WriteLine(myDeck);
 
+                // Shuffling the deck.
+
                 Console.WriteLine($"\nA shuffled deck with {myDeck.Count} cards:");
                 myDeck.Shuffle();
                 Console.WriteLine(myDeck);
 
+                // Create a new instance of a player's hand of cards.
+
                 HandOfCards player1 = new HandOfCards();
                 HandOfCards player2 = new HandOfCards();
 
-            //Your code to play the game comes here
-
+                
+                // My  code to play the game comes here:
             
-                Console.WriteLine("Let's play a game of highest card with two players."); 
+                Console.WriteLine("Let's play a game of highest card with two players.\n"); 
                 if (!TryReadNrOfCards(out NrOfCards))
                 {
                     _continue = false;

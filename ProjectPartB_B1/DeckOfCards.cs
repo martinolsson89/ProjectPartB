@@ -13,23 +13,8 @@ namespace ProjectPartB_B1
         protected const int MaxNrOfCards = 52;
         protected List<PlayingCard> cards = new List<PlayingCard>(MaxNrOfCards);
 
-        // public PlayingCard this[int idx] => null;
+        public PlayingCard this[int idx] => null;
 
-        public PlayingCard this[int idx]
-        {
-            get
-            {
-                if (idx >= 0 && idx < cards.Count)
-                {
-                    return cards[idx];
-                }
-                else
-                {
-                    // Handle out-of-range returns null. 
-                    return null;
-                }
-            }
-        }
         public int Count => cards.Count;
         #endregion
 
@@ -53,6 +38,7 @@ namespace ProjectPartB_B1
 
         #region Shuffle and Sorting
 
+       // Using the Fisher-Yates shuffle algorithm.
         public void Shuffle()
         {
             var rnd = new Random();

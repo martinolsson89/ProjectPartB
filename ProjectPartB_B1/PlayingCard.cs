@@ -79,7 +79,7 @@ namespace ProjectPartB_B1
                     case PlayingCardValue.Ace:
                         return "Ace";
                     default:
-                        return "";
+                        return null;
                 }
             }
         }

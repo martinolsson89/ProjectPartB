@@ -1,17 +1,24 @@
 ﻿using System;
+using System.Numerics;
 
 namespace ProjectPartB_B2
 {
     class PokerHand : HandOfCards
     {
         #region Clear
+
         public override void Clear()
-        { }
+        {
+            HandCards.Clear();
+        }
         #endregion
 
         #region Remove and Add related
+
         public override void Add(PlayingCard card)
-        { }
+        {
+            HandCards.Add(card);
+        }
         #endregion
 
         #region Poker Rank related
@@ -61,6 +68,8 @@ namespace ProjectPartB_B2
                 return false;
             }
         }
+        //private bool IsPair => false;
+
         private bool IsPair => false;
 
         public PokerRank DetermineRank()

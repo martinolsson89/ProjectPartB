@@ -34,6 +34,9 @@ namespace ProjectPartB_B1
 
 			}
 		}
+
+        public object HandCards { get; set; }
+
         public PlayingCard(PlayingCardColor color, PlayingCardValue value)
         {
             Color = color;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Channels;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ProjectPartB_B1
@@ -156,39 +157,28 @@ namespace ProjectPartB_B1
         /// <param name="player2">Player 2</param>
         private static void Deal(DeckOfCards myDeck, int nrCardsToPlayer, HandOfCards player1, HandOfCards player2)
         {
-            player1.HandCards.Clear();
-            player2.HandCards.Clear();
+            player1.Clear();
+            player2.Clear();
 
             for (int i = 0; i < nrCardsToPlayer; i++)
             {
                 player1.Add(myDeck.RemoveTopCard());
-                
-            }
-            for (int i = 0; i < nrCardsToPlayer; i++)
-            {
                 player2.Add(myDeck.RemoveTopCard());
 
             }
-
+            
             Console.WriteLine($"Gave {nrCardsToPlayer} card each to the players from the top of the deck. Deck now has {myDeck.Count}\n");
 
             Console.WriteLine($"Player1 hand with {nrCardsToPlayer} cards:");
             Console.WriteLine($"Lowest card in hand is {player1.Lowest} and highest is {player1.Highest}:");
-
-            for (int i = 0; i < nrCardsToPlayer; i++)
-            {
-                Console.Write($"{player1.HandCards[i].ToString().PadRight(9)}");
-                
-            }
+            Console.WriteLine(player1);
+            
 
             Console.WriteLine();
             Console.WriteLine($"\nPlayer2 hand with {nrCardsToPlayer} cards:");
             Console.WriteLine($"Lowest card in hand is {player2.Lowest} and highest is {player2.Highest}:");
-            for (int i = 0; i < nrCardsToPlayer; i++)
-            {
-                Console.Write($"{player2.HandCards[i].ToString().PadRight(9)}");
-
-            }
+            Console.WriteLine(player2);
+            
             
             Console.WriteLine();
             Console.WriteLine();

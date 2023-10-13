@@ -10,14 +10,31 @@ namespace ProjectPartB_B1
     class HandOfCards : DeckOfCards, IHandOfCards
     {
         #region Pick and Add related
-        public List<PlayingCard> HandCards { get; } = new List<PlayingCard>();
+        protected List<PlayingCard> HandCards { get; } = new List<PlayingCard>();
 
         public void Add(PlayingCard card)
         {
             HandCards.Add(card);
         }
-        #endregion
 
+        public override void Clear()
+        {
+            HandCards.Clear();
+        }
+
+        #endregion
+        #region ToString() related
+        public override string ToString()
+        {
+            string str = "";
+            
+            for (int i = 0; i < HandCards.Count; i++)
+            {
+                str += $"{HandCards[i].ToString().PadRight(9)}";
+            }
+            return str;
+        }
+        #endregion
         #region Highest Card related
         public PlayingCard Highest
         {

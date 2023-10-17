@@ -15,12 +15,12 @@ namespace ProjectPartB_B2
             Console.WriteLine($"\nA freshly created deck with {myDeck.Count} cards:");
             Console.WriteLine(myDeck);
 
-            Console.WriteLine($"\nA sorted deck with {myDeck.Count} cards:");
-            myDeck.Sort();
+            Console.WriteLine($"\nA sorted deck with {myDeck.Count} cards:"); 
+            //myDeck.Sort();
             Console.WriteLine(myDeck);
 
-            Console.WriteLine($"\nA shuffled deck with {myDeck.Count} cards:");
-            myDeck.Shuffle();
+            Console.WriteLine($"\nA shuffled deck with {myDeck.Count} cards:"); 
+            //myDeck.Shuffle();
             Console.WriteLine(myDeck);
 
             PokerHand Player = new PokerHand();
@@ -29,9 +29,12 @@ namespace ProjectPartB_B2
                 //Your code to Give 5 cards to the player and determine the rank
                 //Continue for as long as the deck has at least 5 cards 
                 Deal(myDeck, Player);
-                Player.DetermineRank();
-
-
+                //var rank = Player.DetermineRank();
+                //Console.WriteLine($"Rank is: {rank}");
+                Console.WriteLine($"Rank is {Player.DetermineRank()} with rank-high-card {Player.RankHiCard}");
+                Console.WriteLine($"Deck now has {myDeck.Count} cards");
+                Console.WriteLine();
+                
 
             }
         }
@@ -39,23 +42,14 @@ namespace ProjectPartB_B2
         {
 
             player.Clear();
-            string sRes = $"Player hand: ";
 
             for (int i = 0; i < 5; i++)
             {
                 player.Add(myDeck.RemoveTopCard());
 
             }
-            for (int i = 0; i < 5; i++)
-            {
-               sRes += $"{player.HandCards[i].ToString().PadRight(9)}";
-
-            }
-
-            Console.WriteLine(sRes);
-            Console.WriteLine($"Deck now has {myDeck.Count} cards");
-            Console.WriteLine();
-            Console.WriteLine();
+            Console.WriteLine(player);
+            
         }
     }
  }

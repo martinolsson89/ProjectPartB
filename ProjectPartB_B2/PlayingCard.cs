@@ -20,6 +20,11 @@ namespace ProjectPartB_B2
         }
         #endregion
 
+        public bool IsSameValueAs(PlayingCard other)
+        {
+            return Value == other.Value;
+        }
+
         #region ToString() related
         string ShortDescription
         {

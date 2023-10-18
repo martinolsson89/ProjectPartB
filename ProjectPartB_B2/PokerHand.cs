@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
@@ -10,7 +11,9 @@ namespace ProjectPartB_B2
 
         public override void Clear()
         {
-            HandCards.Clear();
+            cards.Clear();
+
+            ClearRank();
         }
 
         #endregion
@@ -19,7 +22,11 @@ namespace ProjectPartB_B2
 
         public override void Add(PlayingCard card)
         {
-            HandCards.Add(card);
+            cards.Add(card);
+
+            Sort();
+
+            ClearRank();
         }
 
         #endregion
@@ -60,89 +67,62 @@ namespace ProjectPartB_B2
         }
 
         //Hint: Worker Methods to examine a sorted hand
-
-        private int NrSameValue(int valueIdx, out PlayingCard HighCard)
+        
+        private int NrSameValue(int firstValueIdx, out int lastValueIdx, out PlayingCard HighCard)
         {
-            HighCard = HandCards[valueIdx];
-            int count = 1;
+            lastValueIdx = firstValueIdx;  // Initialize lastValueIdx to -1 in case no match is found.
+            HighCard = null;    // Initialize HighCard to null.
 
-            for (int i = valueIdx + 1; i < HandCards.Count; i++)
+            if (firstValueIdx < 0 || firstValueIdx >= cards.Count)
             {
-                if (HandCards[i].Value == HighCard.Value)
+                // Handle an invalid input index.
+                return -1;  // You can choose an appropriate error code or value here.
+            }
+
+            int count = 0;  // Initialize a counter to track the number of matching cards.
+
+            // Loop through the list starting from firstValueIdx and find the last index of a card with the same value.
+            for (int i = firstValueIdx; i < cards.Count; i++)
+            {
+
+                for (int j = i + 1; j < cards.Count; j++) // Change the initialization and condition here
                 {
-                    count++;
-                    if (HandCards[i].Value > HighCard.Value)
+                    if (cards[i].IsSameValueAs(cards[j]))
                     {
-                        HighCard = HandCards[i];
+                        count++;
+                        lastValueIdx = i;
+                        HighCard = cards[i];
                     }
                 }
             }
 
+
             return count;
         }
-
-        private void FindMostCommonCard(out PlayingCard mostCommonCard, out int count)
-        {
-            var groupedCards = HandCards
-                .GroupBy(card => card)
-                .OrderByDescending(group => group.Count());
-
-            var mostCommonGroup = groupedCards.First();
-
-            mostCommonCard = mostCommonGroup.Key;
-            count = mostCommonGroup.Count();
-        }
-
-         private void CountRestOfCards(out int count, out PlayingCard mostCommonCard, PlayingCard excludedCard = null)
-         {
-             var restOfCards = HandCards.Where(card => card != excludedCard).ToList();
-
-             if (restOfCards.Count > 0)
-             {
-                 var groupedRest = restOfCards.GroupBy(card => card)
-                     .OrderByDescending(group => group.Count());
-
-                 var mostCommonGroup = groupedRest.First();
-                 mostCommonCard = mostCommonGroup.Key;
-                 count = mostCommonGroup.Count();
-             }
-             else
-             {
-                 // No cards in the rest of the list
-                 mostCommonCard = null;
-                 count = 0;
-             }
-         }
-
-
-
         private bool IsSameColor(out PlayingCard HighCard)
         {
-            HighCard = HandCards[4];
-            for (int i = 0; i < HandCards.Count - 1; i++)
+            int lastCard = 4;
+            HighCard = cards[lastCard];
+
+            for (int i = 0; i < cards.Count - 1; i++)
             {
-                if (HandCards[i + 1].Color != HandCards[i].Color)
+                if (cards[i + 1].Color != cards[i].Color)
                 {
                     return false; // If any two adjacent elements are not consecutive, return false.
                 }
-
             }
 
-            RankHiCard = HighCard;
             return true;
         }
 
         private bool IsConsecutive(out PlayingCard HighCard)
         {
-            HighCard = RankHiCard;
-            for (int i = 0; i < HandCards.Count - 1; i++)
-            {
-                if (HighCard == null || HighCard.Value < HandCards[i].Value)
-                {
-                    HighCard = HandCards[i];
-                }
+            int lastCard = 4;
+            HighCard = cards[lastCard];
 
-                if (HandCards[i + 1].Value != HandCards[i].Value + 1)
+            for (int i = 0; i < cards.Count - 1; i++)
+            {
+                if (cards[i + 1].Value != cards[i].Value + 1)
                 {
                     return false; // If any two adjacent elements are not consecutive, return false.
                 }
@@ -189,12 +169,12 @@ namespace ProjectPartB_B2
             get
             {
                 int firstValueIdx = 0;
-                int lastValueIdx;
+                int lastValueIdx = 0;
                 PlayingCard HighCard;
 
-                int count = NrSameValue(0 , out HighCard);
+                int count = NrSameValue(firstValueIdx , out lastValueIdx, out HighCard);
 
-                if (count == 4)
+                if (count == 6)
                 {
                     RankHiCard = HighCard;
                     return true;
@@ -208,18 +188,18 @@ namespace ProjectPartB_B2
             get
             {
                 int firstValueIdx = 0;
-                int lastValueIdx;
+                int lastValueIdx = 0;
                 PlayingCard HighCard;
 
-                int count = NrSameValue(0, out HighCard);
+                int count = NrSameValue(0, out lastValueIdx, out HighCard);
 
-                if (count == 3)
+                if (count == 4)
                 {
                     RankHiCard = HighCard;
 
-                    count = NrSameValue(0,  out HighCard);
+                    count = NrSameValue(lastValueIdx + 1, out lastValueIdx, out HighCard);
                     
-                    if (count == 2)
+                    if (count == 1)
                     {
                         // You have a full house.
                         return true;
@@ -264,9 +244,9 @@ namespace ProjectPartB_B2
                 int lastValueIdx;
                 PlayingCard HighCard;
 
-                int count = NrSameValue(0, out HighCard);
+                int count = NrSameValue(0, out lastValueIdx, out HighCard);
 
-                if (count == 3)
+                if (count == 4)
                 {
                     RankHiCard = HighCard;
                     return true;
@@ -280,14 +260,16 @@ namespace ProjectPartB_B2
         {
             get
             {
-                int firstPairCount = NrSameValue(0, out PlayingCard HighCardPair1);
+                int lastValueIdx;
 
-                if (firstPairCount == 2)
+                int firstPairCount = NrSameValue(0, out lastValueIdx, out PlayingCard HighCardPair1);
+
+                if (firstPairCount == 1)
                 {
-                    int nextValueIdx = HandCards.IndexOf(HighCardPair1) + 1;
-                    int secondPairCount = NrSameValue(nextValueIdx, out PlayingCard HighCardPair2);
+                    int nextValueIdx = lastValueIdx + 1;
+                    int secondPairCount = NrSameValue(nextValueIdx,out lastValueIdx, out PlayingCard HighCardPair2);
 
-                    if (secondPairCount == 2)
+                    if (secondPairCount == 1)
                     {
                         RankHiCardPair1 = HighCardPair1;
                         RankHiCardPair2 = HighCardPair2;
@@ -313,15 +295,17 @@ namespace ProjectPartB_B2
         {
             get
             {
-                PlayingCard mostCommonCard;
+                PlayingCard HighCard;
+                int firstValueIdx = 0;
+                int lastValueIdx;
                 int count;
 
-                FindMostCommonCard(out mostCommonCard, out count);
+               count = NrSameValue(firstValueIdx,out lastValueIdx, out HighCard);
 
 
-                if (count == 2)
+                if (count == 1)
                 {
-                    RankHiCard = mostCommonCard;
+                    RankHiCard = HighCard;
                     return true;
                 }
 
@@ -333,9 +317,7 @@ namespace ProjectPartB_B2
         {
             PlayingCard HighCard;
 
-            ClearRank(); // Clear the previous rank information
-
-            HandCards.Sort(); // Sort the hand for easier evaluation
+            cards.Sort(); // Sort the hand for easier evaluation
 
             // Check for the highest-ranking hands first.
             if (IsRoyalFlush)
@@ -401,7 +383,7 @@ namespace ProjectPartB_B2
                 return Rank;
             }
 
-            RankHiCard = HandCards[4];
+            RankHiCard = cards[4];
             Rank = PokerRank.HighCard;
             return Rank;
         }

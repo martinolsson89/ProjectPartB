@@ -93,6 +93,28 @@ namespace ProjectPartB_B2
         }
         #endregion
 
+        public void CreateAPair()
+        {
+            cards.Add(new PlayingCard(PlayingCardColor.Diamonds, PlayingCardValue.Six));
+            cards.Add(new PlayingCard(PlayingCardColor.Spades, PlayingCardValue.Four));
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Seven));
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Three));
+            cards.Add(new PlayingCard(PlayingCardColor.Hearts, PlayingCardValue.Five));
+
+        }
+
+        public void CreateARoyalFlush()
+        {
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Nine));
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Two));
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Ten));
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Queen));
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Knight));
+
+        }
+
+
+
         #region Dealing
         public PlayingCard RemoveTopCard()
         {

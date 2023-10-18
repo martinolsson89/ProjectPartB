@@ -21,15 +21,21 @@ namespace ProjectPartB_B2
             Console.WriteLine(myDeck);
 
             Console.WriteLine($"\nA shuffled deck with {myDeck.Count} cards:"); 
-            myDeck.Shuffle();
+            //myDeck.Shuffle();
             Console.WriteLine(myDeck);
+
+            DeckOfCards testDeck = new DeckOfCards();
+            testDeck.CreateAPair();
+            Console.WriteLine($"\nTestDeck:");
+            Console.WriteLine(testDeck);
+            Console.WriteLine();
 
             PokerHand Player = new PokerHand();
             while (myDeck.Count > 5)
             {
                 //Your code to Give 5 cards to the player and determine the rank
                 //Continue for as long as the deck has at least 5 cards 
-                Deal(myDeck, Player);
+                Deal(testDeck, Player);
 
                 //var rank = Player.DetermineRank();
                 //Console.WriteLine($"Rank is: {rank}");
@@ -49,6 +55,7 @@ namespace ProjectPartB_B2
                     Console.WriteLine();
                 }
 
+                break;
             }
         }
         private static void Deal(DeckOfCards myDeck, PokerHand player)

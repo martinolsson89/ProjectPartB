@@ -157,8 +157,8 @@ namespace ProjectPartB_B1
         /// <param name="player2">Player 2</param>
         private static void Deal(DeckOfCards myDeck, int nrCardsToPlayer, HandOfCards player1, HandOfCards player2)
         {
-            player1.Clear();
-            player2.Clear();
+           player1.Clear();
+           player2.Clear();
 
             for (int i = 0; i < nrCardsToPlayer; i++)
             {
@@ -167,7 +167,7 @@ namespace ProjectPartB_B1
 
             }
             
-            Console.WriteLine($"Gave {nrCardsToPlayer} card each to the players from the top of the deck. Deck now has {myDeck.Count}\n");
+            Console.WriteLine($"Gave {nrCardsToPlayer} card each to the players from the top of the deck. Deck now has {myDeck.Count} cards.\n");
 
             Console.WriteLine($"Player1 hand with {nrCardsToPlayer} cards:");
             Console.WriteLine($"Lowest card in hand is {player1.Lowest} and highest is {player1.Highest}:");

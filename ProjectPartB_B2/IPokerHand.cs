@@ -50,5 +50,6 @@ namespace ProjectPartB_B2
         /// </summary>
         /// <returns>The pokerhand rank. PokerRank.Undefined in case Hand is not 5 cards</returns>
         public PokerRank DetermineRank();
+
     }
 }

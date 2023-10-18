@@ -9,8 +9,23 @@ namespace ProjectPartB_B2
     class HandOfCards : DeckOfCards, IHandOfCards
     {
         #region Pick and Add related
-        protected List<PlayingCard> HandCards { get; } = new List<PlayingCard>();
+        public List<PlayingCard> HandCards { get; set; } = new List<PlayingCard>();
 
+        protected PlayingCard this[int idx]
+        {
+            get
+            {
+                if (idx >= 0 && idx < HandCards.Count)
+                {
+                    return HandCards[idx];
+                }
+                else
+                {
+                    // Handle out-of-range indices gracefully
+                    return null;
+                }
+            }
+        }
         public virtual void Add(PlayingCard card)
         {
             HandCards.Add(card);
@@ -68,5 +83,11 @@ namespace ProjectPartB_B2
             }
         }
         #endregion
+
+        public int CountSameCards(PlayingCard cardToCheck)
+        {
+            int count = HandCards.Count(card => card.CompareTo(cardToCheck) == 0);
+            return count;
+        }
     }
 }

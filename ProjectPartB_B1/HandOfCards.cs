@@ -10,30 +10,14 @@ namespace ProjectPartB_B1
     class HandOfCards : DeckOfCards, IHandOfCards
     {
         #region Pick and Add related
-        protected List<PlayingCard> HandCards { get; } = new List<PlayingCard>();
 
         public void Add(PlayingCard card)
         {
-            HandCards.Add(card);
+            cards.Add(card);
+
+            Sort();
         }
 
-        public override void Clear()
-        {
-            HandCards.Clear();
-        }
-
-        #endregion
-        #region ToString() related
-        public override string ToString()
-        {
-            string str = "";
-            
-            for (int i = 0; i < HandCards.Count; i++)
-            {
-                str += $"{HandCards[i].ToString().PadRight(9)}";
-            }
-            return str;
-        }
         #endregion
         #region Highest Card related
         public PlayingCard Highest
@@ -43,7 +27,7 @@ namespace ProjectPartB_B1
                 int _hiVal = int.MinValue;
                 PlayingCard _hiCard= null;
 
-                foreach (var card in HandCards)
+                foreach (var card in cards)
                 {
                     if ((int)card.Value > _hiVal)
                     {
@@ -62,7 +46,7 @@ namespace ProjectPartB_B1
                 int _lowVal = int.MaxValue;
                 PlayingCard _lowCard = null;
 
-                foreach (var card in HandCards)
+                foreach (var card in cards)
                 {
                     if ((int)card.Value < _lowVal)
                     {

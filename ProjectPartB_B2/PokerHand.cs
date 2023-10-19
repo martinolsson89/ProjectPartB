@@ -41,6 +41,8 @@ namespace ProjectPartB_B2
         private PlayingCard _rankHighPair1 = null;
         private PlayingCard _rankHighPair2 = null;
 
+        public List<PlayingCard> tempCards = new List<PlayingCard>();
+
         public PokerRank Rank
         {
             get { return _rank; }
@@ -70,6 +72,7 @@ namespace ProjectPartB_B2
         
         private int NrSameValue(int firstValueIdx, out int lastValueIdx, out PlayingCard HighCard)
         {
+            tempCards.Clear();
             lastValueIdx = firstValueIdx;  // Initialize lastValueIdx to -1 in case no match is found.
             HighCard = null;    // Initialize HighCard to null.
 
@@ -88,14 +91,14 @@ namespace ProjectPartB_B2
                 for (int j = i + 1; j < cards.Count; j++) // Change the initialization and condition here
                 {
                     if (cards[i].IsSameValueAs(cards[j]))
-                    {
+                    { 
                         count++;
                         lastValueIdx = i;
                         HighCard = cards[i];
+                        tempCards.Add(cards[i]);
                     }
                 }
             }
-
 
             return count;
         }
@@ -197,7 +200,7 @@ namespace ProjectPartB_B2
                 {
                     RankHiCard = HighCard;
 
-                    count = NrSameValue(lastValueIdx + 1, out lastValueIdx, out HighCard);
+                    count = NrSameValue(lastValueIdx, out lastValueIdx, out HighCard);
                     
                     if (count == 1)
                     {
@@ -246,7 +249,7 @@ namespace ProjectPartB_B2
 
                 int count = NrSameValue(0, out lastValueIdx, out HighCard);
 
-                if (count == 4)
+                if (count == 3)
                 {
                     RankHiCard = HighCard;
                     return true;
@@ -260,18 +263,30 @@ namespace ProjectPartB_B2
         {
             get
             {
-                int lastValueIdx;
+                int firstValueIdx = 0;
+                int lastValueIdx = 0;
 
-                int firstPairCount = NrSameValue(0, out lastValueIdx, out PlayingCard HighCardPair1);
-
-                if (firstPairCount == 1)
+                int firstPairCount = NrSameValue(firstValueIdx, out lastValueIdx, out PlayingCard HighCardPair1);
+                
+                if (firstPairCount == 2)
                 {
-                    int nextValueIdx = lastValueIdx + 1;
-                    int secondPairCount = NrSameValue(nextValueIdx,out lastValueIdx, out PlayingCard HighCardPair2);
+                    RankHiCardPair1 = HighCardPair1;
+                    RankHiCard = RankHiCardPair1;
+
+                    foreach (var item in tempCards)
+                    {
+                        if(item.Value < RankHiCard.Value)
+                            RankHiCardPair2 = item;
+                        
+                    }
+
+
+
+                   /* int secondPairCount = NrSameValue(lastValueIdx,out lastValueIdx, out PlayingCard HighCardPair2);
 
                     if (secondPairCount == 1)
                     {
-                        RankHiCardPair1 = HighCardPair1;
+                        
                         RankHiCardPair2 = HighCardPair2;
 
                         // Compare the values of the two pairs to determine which is higher.
@@ -282,10 +297,10 @@ namespace ProjectPartB_B2
                         else
                         {
                             RankHiCard = RankHiCardPair2;
-                        }
+                        } */
 
                         return true;
-                    }
+                  //  }
                 }
 
                 return false;

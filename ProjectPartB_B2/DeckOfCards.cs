@@ -95,11 +95,11 @@ namespace ProjectPartB_B2
 
         public void CreateAPair()
         {
-            cards.Add(new PlayingCard(PlayingCardColor.Diamonds, PlayingCardValue.Six));
+            cards.Add(new PlayingCard(PlayingCardColor.Diamonds, PlayingCardValue.Four));
             cards.Add(new PlayingCard(PlayingCardColor.Spades, PlayingCardValue.Four));
-            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Seven));
-            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Three));
-            cards.Add(new PlayingCard(PlayingCardColor.Hearts, PlayingCardValue.Five));
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Four));
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Eight));
+            cards.Add(new PlayingCard(PlayingCardColor.Hearts, PlayingCardValue.Eight));
 
         }
 

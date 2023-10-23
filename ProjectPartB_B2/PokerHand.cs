@@ -90,7 +90,7 @@ namespace ProjectPartB_B2
 
                 for (int j = i + 1; j < cards.Count; j++) // Change the initialization and condition here
                 {
-                    if (cards[i].IsSameValueAs(cards[j]))
+                    if (cards[i].Value.Equals(cards[j].Value))
                     { 
                         count++;
                         lastValueIdx = i;
@@ -257,7 +257,6 @@ namespace ProjectPartB_B2
                 return false;
             }
         }
-
         private bool IsTwoPair
         {
             get

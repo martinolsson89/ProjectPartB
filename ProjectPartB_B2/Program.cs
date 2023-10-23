@@ -55,6 +55,11 @@ namespace ProjectPartB_B2
                     Console.WriteLine();
                 }
 
+                if (myDeck.Count != 2)
+                {
+                    Console.WriteLine($"\nPress any key to see next hand\n");
+                    Console.ReadKey();
+                }
                 //break;
             }
         }

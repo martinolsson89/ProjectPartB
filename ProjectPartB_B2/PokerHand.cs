@@ -117,7 +117,6 @@ namespace ProjectPartB_B2
 
             return true;
         }
-
         private bool IsConsecutive(out PlayingCard HighCard)
         {
             int lastCard = 4;
@@ -379,14 +378,7 @@ namespace ProjectPartB_B2
 
             if (IsTwoPair)
             {
-                if (RankHiCardPair1.Value > RankHiCardPair2.Value)
-                {
-                    RankHiCard = RankHiCardPair1;
-                }
-                else
-                {
-                    RankHiCard = RankHiCardPair2;
-                }
+                RankHiCard = RankHiCardPair1.Value > RankHiCardPair2.Value ? RankHiCardPair1 : RankHiCardPair2;
                 
                 Rank = PokerRank.TwoPair;
                 return Rank;

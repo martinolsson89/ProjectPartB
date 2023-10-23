@@ -70,6 +70,12 @@ namespace ProjectPartB_B1
                     Console.WriteLine($"\nPlaying round nr {i + 1}\n------------------");
                     Deal(myDeck, NrOfCards, player1, player2);
                     DetermineWinner(player1, player2);
+
+                    if (i != NrOfCards - 1)
+                    {
+                        Console.WriteLine($"\nPress any key to see next round\n");
+                        Console.ReadKey();
+                    }
                 }
 
                 

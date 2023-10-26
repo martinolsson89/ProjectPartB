@@ -12,26 +12,31 @@ namespace ProjectPartB_B2
         protected const int MaxNrOfCards = 52;
         protected List<PlayingCard> cards = new List<PlayingCard>(MaxNrOfCards);
 
+        // This is an indexer for accessing elements in the list.
         public PlayingCard this[int idx]
         {
             get
             {
+                // Check if the provided index is within the valid range.
                 if (idx >= 0 && idx < cards.Count)
                 {
                     return cards[idx];
                 }
                 else
                 {
-                    // Handle out-of-range indices gracefully
-                    return null;
+                    // Throw an exception if you try to get an index outside the range of cards.
+                    throw new Exception("Error: Index out of range");
                 }
             }
         }
 
+        //Keeping count of the deck. 
         public int Count => cards.Count;
         #endregion
 
         #region ToString() related
+
+        // Print out the cards in the deck. 
         public override string ToString()
         {
             string str = "";
@@ -66,6 +71,7 @@ namespace ProjectPartB_B2
             }
         }
 
+        // Sort the cards in the deck.
         public void Sort()
         {
             cards.Sort();
@@ -79,13 +85,16 @@ namespace ProjectPartB_B2
             cards.Clear();
         }
 
+        // Create a fresh deck with 52 cards
         public void CreateFreshDeck()
         {
-            // Create a fresh deck with 52 cards
+            //Going trough each color suit. 
             foreach (PlayingCardColor color in Enum.GetValues(typeof(PlayingCardColor)))
             {
+                // For each color suit go trough each value from two - ace. 
                 foreach (PlayingCardValue value in Enum.GetValues(typeof(PlayingCardValue)))
                 {
+                    // Add new Playing card with color och value to cards list.
                     cards.Add(new PlayingCard(color, value));
 
                 }
@@ -93,29 +102,21 @@ namespace ProjectPartB_B2
         }
         #endregion
 
-        public void CreateAPair()
+        //Create your own poker hand. 
+        public void CreateAPokerHand()
         {
-            cards.Add(new PlayingCard(PlayingCardColor.Diamonds, PlayingCardValue.Four));
-            cards.Add(new PlayingCard(PlayingCardColor.Spades, PlayingCardValue.Four));
-            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Four));
-            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Eight));
-            cards.Add(new PlayingCard(PlayingCardColor.Hearts, PlayingCardValue.Eight));
-
-        }
-
-        public void CreateARoyalFlush()
-        {
-            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Nine));
-            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Two));
-            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Ten));
-            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Queen));
             cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Knight));
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Ace));
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Ten));
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.King));
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Queen));
 
         }
-
-
+        
 
         #region Dealing
+
+        //Removing card at the top of the deck en return it. 
         public PlayingCard RemoveTopCard()
         {
             if (Count > 0)

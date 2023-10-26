@@ -51,6 +51,8 @@ namespace ProjectPartB_B1
 
                 
                 // My  code to play the game comes here:
+
+                //Asking for number of cards and number of players until I get an number between 1-5 for each question.
             
                 Console.WriteLine("Let's play a game of highest card with two players.\n"); 
                 if (!TryReadNrOfCards(out NrOfCards))
@@ -65,6 +67,7 @@ namespace ProjectPartB_B1
                     break;
                 }
 
+                //Displaying each round one at the time.
                 for (int i = 0; i < NrOfRounds; i++)
                 {
                     Console.WriteLine($"\nPlaying round nr {i + 1}\n------------------");
@@ -162,10 +165,12 @@ namespace ProjectPartB_B1
         /// <param name="player1">Player 1</param>
         /// <param name="player2">Player 2</param>
         private static void Deal(DeckOfCards myDeck, int nrCardsToPlayer, HandOfCards player1, HandOfCards player2)
-        {
+        { 
+            // Clear both player hands before dealing new cards.
            player1.Clear();
            player2.Clear();
 
+           //Adding cards from the deck to each player.
             for (int i = 0; i < nrCardsToPlayer; i++)
             {
                 player1.Add(myDeck.RemoveTopCard());
@@ -196,6 +201,8 @@ namespace ProjectPartB_B1
         /// </summary>
         /// <param name="player1">Player 1</param>
         /// <param name="player2">Player 2</param>
+
+        //Comparing each poker hand of player 1 and player 2 using CompareTo and a switch statement. 
         private static void DetermineWinner(HandOfCards player1, HandOfCards player2)
         {
             switch (player1.Highest.CompareTo(player2.Highest))

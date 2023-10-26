@@ -13,12 +13,15 @@ namespace ProjectPartB_B1
         protected const int MaxNrOfCards = 52;
         protected List<PlayingCard> cards = new List<PlayingCard>(MaxNrOfCards);
 
-        public PlayingCard this[int idx] => null;
+        // This is an indexer for accessing elements in the list.
+        public PlayingCard this[int idx] => cards[idx];
 
+        // Keeping count of the deck. 
         public int Count => cards.Count;
         #endregion
 
         #region ToString() related
+        // Print out the cards in the deck.
         public override string ToString()
         {
             string str = "";
@@ -66,16 +69,21 @@ namespace ProjectPartB_B1
             cards.Clear();
         }
 
+        // Create a fresh deck with 52 cards
         public void CreateFreshDeck()
         {
             // Create a fresh deck with 52 cards
-            foreach (PlayingCardColor color in Enum.GetValues(typeof(PlayingCardColor)))
-            {
-                foreach (PlayingCardValue value in Enum.GetValues(typeof(PlayingCardValue)))
-                {
-                    cards.Add(new PlayingCard(color, value));
 
+            //Going trough each color suit. 
+            for (PlayingCardColor i = PlayingCardColor.Clubs; i <= PlayingCardColor.Spades; i++)
+            {
+                // For each color suit go trough each value from two - ace. 
+                for (PlayingCardValue j = PlayingCardValue.Two; j <= PlayingCardValue.Ace; j++)
+                {
+                    // Add new Playing card with color och value to cards list.
+                    cards.Add(new PlayingCard(i, j));
                 }
+                
             }
         }
         #endregion

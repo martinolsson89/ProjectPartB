@@ -14,7 +14,7 @@ namespace ProjectPartB_B2
         public PlayingCardValue Value { get; init; }
 
         #region IComparable Implementation
-        //Need only to compare value in the project
+        //Compare value of playing cards
         public int CompareTo(PlayingCard card1)
         {
             return Value.CompareTo(card1.Value);
@@ -22,6 +22,7 @@ namespace ProjectPartB_B2
         }
         #endregion
         #region Implementation of IEquatable<T> interface
+        //Checking if to playing cards values are equal or not. 
         public bool Equals(PlayingCard otherCard) => (this.Value, this.Color) == (otherCard.Value, otherCard.Color);
 
         //Needed to implement as part of IEquatable
@@ -35,29 +36,28 @@ namespace ProjectPartB_B2
         #endregion
 
         #region ToString() related
+
+        // Calling methods and adding Suit + Value to a string. 
         string ShortDescription
         {
             //Use switch statment or switch expression
             //https://en.wikipedia.org/wiki/Playing_cards_in_Unicode
             get
             {
-                char colorSymbol = GetColorSymbol();
-                string valueSymbol = GetValueSymbol();
+                char colorSymbol = GetColorSuits();
+                string valueSymbol = GetValue();
 
                 return $"{colorSymbol} {valueSymbol}";
 
             }
         }
-        public PlayingCard(PlayingCardColor color, PlayingCardValue value)
-        {
-            Color = color;
-            Value = value;
-        }
 
+        //Printing the playing card. 
         public override string ToString() => ShortDescription;
         #endregion
 
-        private char GetColorSymbol()
+        //Method for getting Card suits - clubs (♣), diamonds (♦), hearts (♥), and spades (♠).
+        private char GetColorSuits()
         {
             switch (Color)
             {
@@ -73,13 +73,15 @@ namespace ProjectPartB_B2
                     return '0';
             }
         }
-
-        private string GetValueSymbol()
+        //Method for getting card values
+        private string GetValue()
         {
+            // Value two - ten.
             if (Value >= PlayingCardValue.Two && Value <= PlayingCardValue.Ten)
             {
                 return Value.ToString();
             }
+            // Value Knight - Ace.
             else
             {
                 switch (Value)
@@ -97,6 +99,11 @@ namespace ProjectPartB_B2
                 }
             }
         }
-
+        //Constructor for creating a new playing card.
+        public PlayingCard(PlayingCardColor color, PlayingCardValue value)
+        {
+            Color = color;
+            Value = value;
+        }
     }
 }

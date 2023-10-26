@@ -10,7 +10,7 @@ namespace ProjectPartB_B1
     class HandOfCards : DeckOfCards, IHandOfCards
     {
         #region Pick and Add related
-
+        // Add cards to the poker hand and sort. 
         public void Add(PlayingCard card)
         {
             cards.Add(card);
@@ -20,6 +20,7 @@ namespace ProjectPartB_B1
 
         #endregion
         #region Highest Card related
+        // Finding highest and lowest cards of each poker hand.
         public PlayingCard Highest
         {
             get

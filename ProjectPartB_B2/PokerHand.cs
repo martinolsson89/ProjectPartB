@@ -9,6 +9,7 @@ namespace ProjectPartB_B2
     {
         #region Clear
 
+        // Overriding clear and to implement it for PokerHand.
         public override void Clear()
         {
             cards.Clear();
@@ -25,8 +26,6 @@ namespace ProjectPartB_B2
             cards.Add(card);
 
             Sort();
-
-            ClearRank();
         }
 
         #endregion
@@ -41,6 +40,7 @@ namespace ProjectPartB_B2
         private PlayingCard _rankHighPair1 = null;
         private PlayingCard _rankHighPair2 = null;
 
+        // Used in method NrSameValue to store cards temporary.
         public List<PlayingCard> tempCards = new List<PlayingCard>();
 
         public PokerRank Rank
@@ -70,30 +70,29 @@ namespace ProjectPartB_B2
 
         //Hint: Worker Methods to examine a sorted hand
         
-        private int NrSameValue(int firstValueIdx, out int lastValueIdx, out PlayingCard HighCard)
+        //Method used to find multiple cards with same value.
+        private int NrSameValue(out PlayingCard HighCard)
         {
             tempCards.Clear();
-            lastValueIdx = firstValueIdx;  // Initialize lastValueIdx to -1 in case no match is found.
+            int firstValueIdx = 0;
             HighCard = null;    // Initialize HighCard to null.
 
             if (firstValueIdx < 0 || firstValueIdx >= cards.Count)
             {
-                // Handle an invalid input index.
-                return -1;  // You can choose an appropriate error code or value here.
+                throw new Exception("Error: First index of first value is out of range");
             }
 
-            int count = 0;  // Initialize a counter to track the number of matching cards.
+            int count = 0;  // Counter to track number of matching cards.
 
-            // Loop through the list starting from firstValueIdx and find the last index of a card with the same value.
+            // Loop through the list starting from firstValueIdx.
             for (int i = firstValueIdx; i < cards.Count; i++)
             {
 
-                for (int j = i + 1; j < cards.Count; j++) // Change the initialization and condition here
+                for (int j = i + 1; j < cards.Count; j++)
                 {
                     if (cards[i].Value.Equals(cards[j].Value))
                     { 
                         count++;
-                        lastValueIdx = i;
                         HighCard = cards[i];
                         tempCards.Add(cards[i]);
                     }
@@ -102,6 +101,7 @@ namespace ProjectPartB_B2
 
             return count;
         }
+        //Check if cards are same Color Suit. 
         private bool IsSameColor(out PlayingCard HighCard)
         {
             int lastCard = 4;
@@ -117,6 +117,8 @@ namespace ProjectPartB_B2
 
             return true;
         }
+
+        //Check if cards are in consecutive order E.g. 2,3,4,5,6.
         private bool IsConsecutive(out PlayingCard HighCard)
         {
             int lastCard = 4;
@@ -138,27 +140,24 @@ namespace ProjectPartB_B2
         {
             get
             {
-                PlayingCard HighCard;
-                if (IsSameColor(out HighCard) && IsConsecutive(out HighCard))
+                // Checking if poker hand is same color AND in consecutive order
+                if (IsSameColor(out _) && IsConsecutive(out PlayingCard HighCard))
                 {
+                    // If HighCard is Ace return true, we have a RoyalFlush!
                     RankHiCard = HighCard;
                     if (RankHiCard.Value == PlayingCardValue.Ace)
                     {
                         return true;
-                        
                     }
-                    
                 }
                 return false;
-
             }
         }
         private bool IsStraightFlush
         {
             get
             {
-                PlayingCard HighCard;
-                if (IsSameColor(out HighCard) && IsConsecutive(out HighCard))
+                if (IsSameColor(out _) && IsConsecutive(out PlayingCard HighCard))
                 { 
                     RankHiCard = HighCard;
                     return true;
@@ -170,11 +169,13 @@ namespace ProjectPartB_B2
         {
             get
             {
-                int firstValueIdx = 0;
-                int lastValueIdx = 0;
-                PlayingCard HighCard;
+                int count = NrSameValue(out PlayingCard HighCard);
 
-                int count = NrSameValue(firstValueIdx , out lastValueIdx, out HighCard);
+                // Four cards with same value = count 6. 
+                // For example: 
+                // cards[0] = cards[1], cards[0] = cards[2], cards[0] = cards[3]
+                // cards[1] = cards[2], cards[1] = cards[3]
+                // cards[2] = cards[3]
 
                 if (count == 6)
                 {
@@ -189,23 +190,12 @@ namespace ProjectPartB_B2
         {
             get
             {
-                int firstValueIdx = 0;
-                int lastValueIdx = 0;
-                PlayingCard HighCard;
-
-                int count = NrSameValue(0, out lastValueIdx, out HighCard);
+                int count = NrSameValue(out _);
 
                 if (count == 4)
                 {
-                    RankHiCard = HighCard;
-
-                    count = NrSameValue(lastValueIdx, out lastValueIdx, out HighCard);
-                    
-                    if (count == 1)
-                    {
-                        // You have a full house.
-                        return true;
-                    }
+                    RankHiCard = cards[0];
+                    return true;
                 }
 
                 return false;
@@ -215,8 +205,7 @@ namespace ProjectPartB_B2
         {
             get
             {
-                PlayingCard HighCard;
-                if (IsSameColor(out HighCard))
+                if (IsSameColor(out PlayingCard HighCard))
                 {
                     RankHiCard = HighCard;
                     return true;
@@ -229,8 +218,7 @@ namespace ProjectPartB_B2
         {
             get
             {
-                PlayingCard HighCard;
-                if (IsConsecutive(out HighCard))
+                if (IsConsecutive(out PlayingCard HighCard))
                 {
                     RankHiCard = HighCard;
                     return true;
@@ -242,11 +230,7 @@ namespace ProjectPartB_B2
         {
             get
             {
-                int firstValueIdx = 0;
-                int lastValueIdx;
-                PlayingCard HighCard;
-
-                int count = NrSameValue(0, out lastValueIdx, out HighCard);
+                int count = NrSameValue(out PlayingCard HighCard);
 
                 if (count == 3)
                 {
@@ -261,44 +245,15 @@ namespace ProjectPartB_B2
         {
             get
             {
-                int firstValueIdx = 0;
-                int lastValueIdx = 0;
-
-                int firstPairCount = NrSameValue(firstValueIdx, out lastValueIdx, out PlayingCard HighCardPair1);
+                int firstPairCount = NrSameValue(out PlayingCard HighCardPair1);
                 
                 if (firstPairCount == 2)
                 {
                     RankHiCardPair1 = HighCardPair1;
                     RankHiCard = RankHiCardPair1;
+                    RankHiCardPair2 = tempCards[0];
 
-                    foreach (var item in tempCards)
-                    {
-                        if(item.Value < RankHiCard.Value)
-                            RankHiCardPair2 = item;
-                        
-                    }
-
-
-
-                   /* int secondPairCount = NrSameValue(lastValueIdx,out lastValueIdx, out PlayingCard HighCardPair2);
-
-                    if (secondPairCount == 1)
-                    {
-                        
-                        RankHiCardPair2 = HighCardPair2;
-
-                        // Compare the values of the two pairs to determine which is higher.
-                        if (RankHiCardPair1.Value > RankHiCardPair2.Value)
-                        {
-                            RankHiCard = RankHiCardPair1;
-                        }
-                        else
-                        {
-                            RankHiCard = RankHiCardPair2;
-                        } */
-
-                        return true;
-                  //  }
+                    return true;
                 }
 
                 return false;
@@ -308,12 +263,7 @@ namespace ProjectPartB_B2
         {
             get
             {
-                PlayingCard HighCard;
-                int firstValueIdx = 0;
-                int lastValueIdx;
-                int count;
-
-               count = NrSameValue(firstValueIdx,out lastValueIdx, out HighCard);
+                int count = NrSameValue(out PlayingCard HighCard);
 
 
                 if (count == 1)
@@ -328,74 +278,32 @@ namespace ProjectPartB_B2
 
         public PokerRank DetermineRank()
         {
-            PlayingCard HighCard;
+            PlayingCard HighCard = cards[4]; //Last card is the highest card when the hand is sorted.  
 
-            cards.Sort(); // Sort the hand for easier evaluation
-
-            // Check for the highest-ranking hands first.
-            if (IsRoyalFlush)
+            //Using a switch expression
+            Rank = true switch
             {
-                Rank = PokerRank.RoyalFlush;
-                return Rank;
+                _ when IsRoyalFlush => PokerRank.RoyalFlush,
+                _ when IsStraightFlush => PokerRank.StraightFlush,
+                _ when IsFourOfAKind => PokerRank.FourOfAKind,
+                _ when IsFullHouse => PokerRank.FullHouse,
+                _ when IsFlush => PokerRank.Flush,
+                _ when IsStraight => PokerRank.Straight,
+                _ when IsThreeOfAKind => PokerRank.ThreeOfAKind,
+                _ when IsTwoPair => PokerRank.TwoPair,
+                _ when IsPair => PokerRank.Pair,
+                _ => PokerRank.HighCard
+            };
+
+            if (Rank == PokerRank.HighCard)
+            {
+                RankHiCard = HighCard; // Set RankHiCard to last card in the hand when Rank is HighCard. 
             }
 
-            if (IsStraightFlush)
-            {
-                Rank = PokerRank.StraightFlush;
-                return Rank;
-            }
-
-            if (IsFourOfAKind)
-            {
-                Rank = PokerRank.FourOfAKind;
-                return Rank;
-            }
-
-            if (IsFullHouse)
-            {
-                Rank = PokerRank.FullHouse;
-                return Rank;
-            }
-
-            if (IsFlush)
-            {
-                Rank = PokerRank.Flush;
-                return Rank;
-            }
-
-            if (IsStraight)
-            {
-                Rank = PokerRank.Straight;
-                return Rank;
-            }
-
-            if (IsThreeOfAKind)
-            {
-                Rank = PokerRank.ThreeOfAKind;
-                return Rank;
-            }
-
-            if (IsTwoPair)
-            {
-                RankHiCard = RankHiCardPair1.Value > RankHiCardPair2.Value ? RankHiCardPair1 : RankHiCardPair2;
-                
-                Rank = PokerRank.TwoPair;
-                return Rank;
-            }
-
-            if (IsPair)
-            {
-                Rank = PokerRank.Pair;
-                return Rank;
-            }
-
-            RankHiCard = cards[4];
-            Rank = PokerRank.HighCard;
             return Rank;
         }
-    
 
-    //Hint: Clear rank
+        //Hint: Clear rank
         private void ClearRank()
         {
             _rankHigh = null;

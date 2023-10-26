@@ -35,17 +35,11 @@ namespace ProjectPartB_B1
 			}
 		}
 
-        public object HandCards { get; set; }
-
-        public PlayingCard(PlayingCardColor color, PlayingCardValue value)
-        {
-            Color = color;
-            Value = value;
-        }
 
         public override string ToString() => ShortDescription;
         #endregion
 
+        //Method for getting Card suits - clubs (♣), diamonds (♦), hearts (♥), and spades (♠).
         private char GetColorSymbol()
         {
             switch (Color)
@@ -62,7 +56,7 @@ namespace ProjectPartB_B1
                     return '0';
             }
         }
-
+        //Method for getting card values
         private string GetValueSymbol()
         {
             if (Value >= PlayingCardValue.Two && Value <= PlayingCardValue.Ten)
@@ -85,6 +79,12 @@ namespace ProjectPartB_B1
                         return null;
                 }
             }
+        }
+
+        public PlayingCard(PlayingCardColor color, PlayingCardValue value)
+        {
+            Color = color;
+            Value = value;
         }
 
     }

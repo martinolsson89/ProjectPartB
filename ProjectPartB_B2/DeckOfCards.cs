@@ -106,10 +106,10 @@ namespace ProjectPartB_B2
         public void CreateAPokerHand()
         {
             cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Knight));
-            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Ace));
             cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Ten));
-            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.King));
-            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Queen));
+            cards.Add(new PlayingCard(PlayingCardColor.Diamonds, PlayingCardValue.Knight));
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Nine));
+            cards.Add(new PlayingCard(PlayingCardColor.Clubs, PlayingCardValue.Ten));
 
         }
         

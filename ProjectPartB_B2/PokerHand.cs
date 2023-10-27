@@ -41,7 +41,7 @@ namespace ProjectPartB_B2
         private PlayingCard _rankHighPair2 = null;
 
         // Used in method NrSameValue to store cards temporary.
-        public List<PlayingCard> tempCards = new List<PlayingCard>();
+        protected List<PlayingCard> tempCards = new List<PlayingCard>();
 
         public PokerRank Rank
         {
@@ -70,10 +70,11 @@ namespace ProjectPartB_B2
 
         //Hint: Worker Methods to examine a sorted hand
         
-        //Method used to find multiple cards with same value.
+        // This method counts the number of cards with the same value and returns the count.
+        // It also sets the 'HighCard' to the highest card with a matching value.
         private int NrSameValue(out PlayingCard HighCard)
         {
-            tempCards.Clear();
+            tempCards.Clear(); // Clear a temporary list of cards.
             int firstValueIdx = 0;
             HighCard = null;    // Initialize HighCard to null.
 
@@ -88,8 +89,12 @@ namespace ProjectPartB_B2
             for (int i = firstValueIdx; i < cards.Count; i++)
             {
 
+                // Nested loop to compare the card at 'i' with other cards in the list.
                 for (int j = i + 1; j < cards.Count; j++)
                 {
+
+                    // If two cards have the same value, increment the count, set 'HighCard' to one of them,
+                    // and add the matching card to 'tempCards' list. This might be considered shallow copy, but it work for this purpose.
                     if (cards[i].Value.Equals(cards[j].Value))
                     { 
                         count++;
@@ -171,7 +176,7 @@ namespace ProjectPartB_B2
             {
                 int count = NrSameValue(out PlayingCard HighCard);
 
-                // Four cards with same value = count 6. 
+                // Four cards with same value == count 6. 
                 // For example: 
                 // cards[0] = cards[1], cards[0] = cards[2], cards[0] = cards[3]
                 // cards[1] = cards[2], cards[1] = cards[3]
@@ -190,11 +195,24 @@ namespace ProjectPartB_B2
         {
             get
             {
-                int count = NrSameValue(out _);
+                int count = NrSameValue(out PlayingCard Highcard);
 
+                // Count == 4 equals 3 cards of the same value and 2 cards of the same value.
                 if (count == 4)
                 {
-                    RankHiCard = cards[0];
+                    RankHiCard = Highcard;
+
+                    //Determine which card should be Highcard.
+                    int cardCount = 0;
+                    foreach (var card in cards)
+                    {
+                        if (card.Value != Highcard.Value)
+                            cardCount++;
+                    }
+
+                    if (cardCount > 2)
+                        RankHiCard = cards[0];
+                    
                     return true;
                 }
 
@@ -245,9 +263,10 @@ namespace ProjectPartB_B2
         {
             get
             {
-                int firstPairCount = NrSameValue(out PlayingCard HighCardPair1);
+                int Count = NrSameValue(out PlayingCard HighCardPair1);
                 
-                if (firstPairCount == 2)
+                // count is 2 we have two pairs. HighCardsPair1 is RankHighCard, second pair is at index 0 and index 1 in tempCards.
+                if (Count == 2)
                 {
                     RankHiCardPair1 = HighCardPair1;
                     RankHiCard = RankHiCardPair1;
@@ -265,7 +284,7 @@ namespace ProjectPartB_B2
             {
                 int count = NrSameValue(out PlayingCard HighCard);
 
-
+                //Count 1 we have one pair. 
                 if (count == 1)
                 {
                     RankHiCard = HighCard;
@@ -280,7 +299,7 @@ namespace ProjectPartB_B2
         {
             PlayingCard HighCard = cards[4]; //Last card is the highest card when the hand is sorted.  
 
-            //Using a switch expression
+            //Using a switch expression to set the accurate Poker rank. 
             Rank = true switch
             {
                 _ when IsRoyalFlush => PokerRank.RoyalFlush,
